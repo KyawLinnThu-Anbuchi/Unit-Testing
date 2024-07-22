@@ -1,0 +1,22 @@
+Product
+
+- Create the Product
+    - Should return 201
+    - Shoud create the Product & data must be same with input data
+
+- Find the Product
+    - Should return 404 if not found
+    - Shoud return 200 if found
+    - Shoud return Product
+
+- Get All products
+    - Shoud return 200
+    - Shoud return all products
+
+- Update the Product
+    - Update non-existent product should return 404
+    - Should update the product & status must be 200
+
+- Delete the product
+    - Delete non-existent product should return 404
+    - Should delete the product & status must be 204

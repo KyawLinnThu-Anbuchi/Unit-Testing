@@ -1,5 +1,6 @@
 {
     "verbose": true,
     "collectCoverage": true,
-    "coverageDirectory": "./coverage"
+    "coverageDirectory": "./coverage",
+    "testResultsProcessor": "./node_modules/jest-html-reporter"
 }

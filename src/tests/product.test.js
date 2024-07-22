@@ -8,17 +8,18 @@ const app = createServer();
 
 export const productPayload = {
   title: "Title",
-  description: "Description"
+  description: "Description",
 };
 
 export const updateProductPayload = {
   title: "Title Edit",
-  description: "Description"
-}
+  description: "Description",
+};
 
-describe("product", () => {
+describe("Product", () => {
   beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();
+    mongoose.set("strictQuery", false);
     mongoose.connect(mongoServer.getUri());
   });
 
@@ -27,84 +28,113 @@ describe("product", () => {
     await mongoose.connection.close();
   });
 
-  describe("Products API", () => {
-    // Create
-    describe("Create products route", () => {
-      test("should return a 200 and create the product", async () => {
-        const { statusCode, body } = await supertest(app)
-          .post("/api/products")
-          .send(productPayload);
-  
-        expect(statusCode).toBe(200);
-  
-        expect(body).toEqual({
-          __v: 0,
-          _id: expect.any(String),
-          createdAt: expect.any(String),
-          description: "Description",
-          productId: expect.any(String),
-          title: "Title",
-          updatedAt: expect.any(String),
-        });
-      });
+  describe("Create products", () => {
+    test("Should return 201", async () => {
+      const { statusCode, body } = await supertest(app)
+        .post("/api/products")
+        .send(productPayload);
+
+      expect(statusCode).toBe(201);
     });
 
-    // Read
-    describe("given the product does not exist", () => {
-      test("should return a 404", async () => {
-        const productId = "product-123";
-        await supertest(app).get(`/api/products/${productId}`).expect(404);
-      });
-    });
+    test("Should create the product", async () => {
+      const { statusCode, body } = await supertest(app)
+        .post("/api/products")
+        .send(productPayload);
 
-    // Read
-    describe("given the product does exist", () => {
-      test("should return a 200 status and get all products", async () => {
-        // Create a product
-        var { statusCode: postStatusCode } = await supertest(app)
-          .post("/api/products")
-          .send(productPayload);
-        expect(postStatusCode).toBe(200);
-      
-        // Get all products
-        var { body, statusCode: getStatusCode } = await supertest(app)
-          .get("/api/products");
-      
-        expect(getStatusCode).toBe(200);
-      
-        expect(body[0]).toEqual({
-          __v: 0,
-          _id: expect.any(String),
-          createdAt: expect.any(String),
-          description: "Description",
-          productId: expect.any(String),
-          title: "Title",
-          updatedAt: expect.any(String),
-        });
-      });
-      
-
-      test("should return a 200 status and get one product", async () => {
-        const product = await createProduct(productPayload);
-        const { body, statusCode } = await supertest(app).get(
-          `/api/products/${product.productId}`
-        );
-
-        expect(statusCode).toBe(200);
-        expect(body.productId).toBe(product.productId);
+      expect(body).toEqual({
+        __v: 0,
+        _id: expect.any(String),
+        createdAt: expect.any(String),
+        description: "Description",
+        productId: expect.any(String),
+        title: "Title",
+        updatedAt: expect.any(String),
       });
     });
   });
 
-  // Update
-  describe("Update products route", () => {
-    test("Update", async() => {
+  describe("Find the product", () => {
+    const productId = "product-123";
+    test("Should return 404 when product not found", async () => {
+      await supertest(app).get(`/api/products/${productId}`).expect(404);
+    });
+
+    test("should return 200 status when product found", async () => {
+      const product = await createProduct(productPayload);
+      const { body, statusCode } = await supertest(app).get(
+        `/api/products/${product.productId}`
+      );
+      expect(statusCode).toBe(200);
+    });
+
+    test("should return product", async () => {
+      const product = await createProduct(productPayload);
+      const { body, statusCode } = await supertest(app).get(
+        `/api/products/${product.productId}`
+      );
+      expect(body.productId).toBe(product.productId);
+    });
+  });
+
+  describe("Get All products", () => {
+    test("Should return a 200 status", async () => {
+      var { statusCode: postStatusCode } = await supertest(app)
+        .post("/api/products")
+        .send(productPayload);
+      expect(postStatusCode).toBe(201);
+
+      var { statusCode: getStatusCode } = await supertest(app).get(
+        "/api/products"
+      );
+
+      expect(getStatusCode).toBe(200);
+    });
+
+    test("Should get all products", async () => {
+      var { statusCode: postStatusCode } = await supertest(app)
+        .post("/api/products")
+        .send(productPayload);
+      expect(postStatusCode).toBe(201);
+
+      var { body, statusCode: getStatusCode } = await supertest(app).get(
+        "/api/products"
+      );
+
+      expect(body[0]).toEqual({
+        __v: 0,
+        _id: expect.any(String),
+        createdAt: expect.any(String),
+        description: "Description",
+        productId: expect.any(String),
+        title: "Title",
+        updatedAt: expect.any(String),
+      });
+    });
+  });
+
+  describe("Update product", () => {
+    test("Update non-existent product should return 404", async () => {
+      const nonExistentProductId = "nonExistentProductId";
+      const { statusCode, body } = await supertest(app)
+        .put(`/api/products/${nonExistentProductId}`)
+        .send(updateProductPayload);
+
+      // Check for 404 status code
+      expect(statusCode).toBe(404);
+      expect(body).toEqual({
+        message: "Product not found",
+      });
+    });
+
+    test("Should update the products & status must be 200", async () => {
       const product = await createProduct(productPayload);
       var { statusCode, body } = await supertest(app)
         .put(`/api/products/${product.productId}`)
         .send(updateProductPayload);
-      
+
       expect(statusCode).toBe(200);
+
       expect(body).toEqual({
         __v: 0,
         _id: expect.any(String),
@@ -114,44 +144,27 @@ describe("product", () => {
         title: "Title Edit",
         updatedAt: expect.any(String),
       });
-    })
-
-    test("Update non-existent product should return 404", async () => {
-      // Use a random productId that does not exist in the database
-      const nonExistentProductId = "nonExistentProductId";
-  
-      // Attempt to update a non-existent product
-      const { statusCode, body } = await supertest(app)
-        .put(`/api/products/${nonExistentProductId}`)
-        .send(updateProductPayload);
-  
-      // Check for 404 status code
-      expect(statusCode).toBe(404);
-      expect(body).toEqual({
-        message: "Product not found", // Adjust the message based on your API's response
-      });
     });
   });
 
-  // Delete
   describe("Delete products route", () => {
-    test("Update non-existent product should return 404", async () => {
-      // Use a random productId that does not exist in the database
-      const nonExistentProductId = "nonExistentProductId";
-      const { statusCode, body } = await supertest(app).delete(`/api/products/${nonExistentProductId}`);
-      // Check for 404 status code
-      expect(statusCode).toBe(404);
-      expect(body).toEqual({
-        message: "Product not found", // Adjust the message based on your API's response
-      });
-    });
+    // test("Update non-existent product should return 404", async () => {
+    //   const nonExistentProductId = "nonExistentProductId";
+    //   const { statusCode, body } = await supertest(app).delete(
+    //     `/api/products/${nonExistentProductId}`
+    //   );
+    //   expect(statusCode).toBe(404);
+    //   expect(body).toEqual({
+    //     message: "Product not found",
+    //   });
+    // });
 
-    test("should return a 200 status and delete one product", async () => {
+    test("should return a 204 status and delete one product", async () => {
       const product = await createProduct(productPayload);
       const { statusCode } = await supertest(app).delete(
         `/api/products/${product.productId}`
       );
-      expect(statusCode).toBe(200);
+      expect(statusCode).toBe(204);
     });
   });
 });

@@ -3,7 +3,7 @@ import { createProduct, findProduct, findAndUpdateProduct, deleteProduct, findAl
 export async function createProductHandler(req, res) {
   const body = req.body;
   const product = await createProduct({ ...body });
-  return res.send(product);
+  return res.status(201).send(product);
 }
 
 export async function getAllProductHandler(req, res) {
@@ -39,5 +39,5 @@ export async function deleteProductHandler(req, res) {
     return res.status(404).send({ message: "Product not found" });
   }
   await deleteProduct({ productId });
-  return res.sendStatus(200);
+  return res.sendStatus(204);
 }

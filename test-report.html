@@ -10,7 +10,7 @@ body {
   padding: 2rem 1rem;
   font-size: 0.85rem;
 }
-#jesthtml-content {
+.jesthtml-content {
   margin: 0 auto;
   max-width: 70rem;
 }
@@ -149,6 +149,21 @@ header {
 .suite-container {
   margin-bottom: 2rem;
 }
+.suite-container > input[type="checkbox"] {
+  position: absolute;
+  left: -100vw;
+}
+.suite-container label {
+  display: block;
+}
+.suite-container .suite-tests {
+  overflow-y: hidden;
+  height: 0;
+}
+.suite-container > input[type="checkbox"]:checked ~ .suite-tests {
+  height: auto;
+  overflow: visible;
+}
 .suite-info {
   padding: 1rem;
   background-color: #eee;
@@ -156,6 +171,10 @@ header {
   display: flex;
   align-items: center;
   margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  background-color: #ddd;
+  cursor: pointer;
 }
 .suite-info .suite-path {
   word-break: break-all;
@@ -171,6 +190,15 @@ header {
 .suite-info .suite-time.warn {
   background-color: #d8000c;
   color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transform: rotate(0deg);
+}
+.suite-container > input[type="checkbox"]:checked ~ label .suite-info:before {
+  transform: rotate(180deg);
 }
 
 /* CONSOLE LOGS */
@@ -229,4 +257,4 @@ header {
   font-size: 1rem;
   padding: 0 0.5rem;
 }
-</style></head><body><div id="jesthtml-content"><header><h1 id="title">Test Report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2022-10-19 16:04:07</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (2)</div><div class="summary-passed">2 passed</div><div class="summary-failed summary-empty">0 failed</div><div class="summary-pending summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (5)</div><div class="summary-passed">5 passed</div><div class="summary-failed summary-empty">0 failed</div><div class="summary-pending summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><div class="suite-info"><div class="suite-path">C:\Users\KyawLinThu\Desktop\testcase\app.test.js</div><div class="suite-time">2.77s</div></div><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Get Method</div><div class="test-title">Use done</div><div class="test-status">passed</div><div class="test-duration">0.039s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Get Method</div><div class="test-title">Promise Way</div><div class="test-status">passed</div><div class="test-duration">0.009s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Get Method</div><div class="test-title">The GET / with async</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Get Method</div><div class="test-title">Super test</div><div class="test-status">passed</div><div class="test-duration">0.018s</div></div></div></div></div><div id="suite-2" class="suite-container"><div class="suite-info"><div class="suite-path">C:\Users\KyawLinThu\Desktop\testcase\index.test.js</div><div class="suite-time">2.745s</div></div><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Post Method</div><div class="test-title">Post /api</div><div class="test-status">passed</div><div class="test-duration">0.039s</div></div></div></div></div></div></body></html>
+</style></head><body><div class="jesthtml-content"><header><h1 id="title">Test Report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2024-07-23 01:08:32</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (1)</div><div class="summary-passed ">1 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (8)</div><div class="summary-passed ">8 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><input id="collapsible-0" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-0"><div class="suite-info"><div class="suite-path">/Users/admin/Desktop/NodeJS-Unit-Testing/src/tests/product.test.js</div><div class="suite-time">1.116s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Products API &gt; Create products route</div><div class="test-title">should return a 200 and create the product</div><div class="test-status">passed</div><div class="test-duration">0.059s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Products API &gt; given the product does not exist</div><div class="test-title">should return a 404</div><div class="test-status">passed</div><div class="test-duration">0.027s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Products API &gt; given the product does exist</div><div class="test-title">should return a 200 status and get all products</div><div class="test-status">passed</div><div class="test-duration">0.016s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Products API &gt; given the product does exist</div><div class="test-title">should return a 200 status and get one product</div><div class="test-status">passed</div><div class="test-duration">0.017s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Update products route</div><div class="test-title">Update</div><div class="test-status">passed</div><div class="test-duration">0.02s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Update products route</div><div class="test-title">Update non-existent product should return 404</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Delete products route</div><div class="test-title">Update non-existent product should return 404</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">product &gt; Delete products route</div><div class="test-title">should return a 200 status and delete one product</div><div class="test-status">passed</div><div class="test-duration">0.017s</div></div></div></div></div></div></body></html>
