@@ -2,5 +2,11 @@
     "verbose": true,
     "collectCoverage": true,
     "coverageDirectory": "./coverage",
-    "testResultsProcessor": "./node_modules/jest-html-reporter"
+    "testResultsProcessor": "./node_modules/jest-html-reporter",
+    "reporters": [
+        "default",
+        ["./node_modules/jest-html-reporter", {
+            "pageTitle": "Test Report"
+        }]
+    ]
 }

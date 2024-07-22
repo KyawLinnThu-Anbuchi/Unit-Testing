@@ -148,16 +148,16 @@ describe("Product", () => {
   });
 
   describe("Delete products route", () => {
-    // test("Update non-existent product should return 404", async () => {
-    //   const nonExistentProductId = "nonExistentProductId";
-    //   const { statusCode, body } = await supertest(app).delete(
-    //     `/api/products/${nonExistentProductId}`
-    //   );
-    //   expect(statusCode).toBe(404);
-    //   expect(body).toEqual({
-    //     message: "Product not found",
-    //   });
-    // });
+    test("Delete non-existent product should return 404", async () => {
+      const nonExistentProductId = "nonExistentProductId";
+      const { statusCode, body } = await supertest(app).delete(
+        `/api/products/${nonExistentProductId}`
+      );
+      expect(statusCode).toBe(404);
+      expect(body).toEqual({
+        message: "Product not found",
+      });
+    });
 
     test("should return a 204 status and delete one product", async () => {
       const product = await createProduct(productPayload);
